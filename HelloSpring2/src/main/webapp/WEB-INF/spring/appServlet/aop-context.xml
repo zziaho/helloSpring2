@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<!-- 
+		AOP 설정하기
+		1. <aop:config> 태그를 이용
+			1) <aop:aspect> : AOP실행 메소드를 가지고 있는 클래스 등록
+				(1) <aop:pointcut> : 적용대상을 패턴으로 등록
+				(2) <aop:before || after || afterReturning...> : 적용시점, 메소드를 지정
+	 -->
+	<bean id="loggerAspect" class="com.bs.spring2.common.aop.LoggerAspect"/>
+	 
+	<aop:config>
+		<aop:aspect ref="loggerAspect">
+			<!-- (* : 반환형) (.. : memo패키지의 모든 클래스에 적용) (* : 메소드 명) ((..) : 전체 메소드) -->
+			<aop:pointcut expression="execution(* com.bs.spring2.memo..*(..))" id="loggerPc"/>
+			<aop:before method="loggerBefore" pointcut-ref="loggerPc"/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>
