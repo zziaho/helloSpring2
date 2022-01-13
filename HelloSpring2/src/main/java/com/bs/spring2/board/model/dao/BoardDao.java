@@ -10,4 +10,7 @@ public interface BoardDao {
 
 	List<Board> selectBoardList(SqlSessionTemplate session);
 	
+	int countBoardList(SqlSessionTemplate session);
+	
+	Board selectBoard(SqlSessionTemplate session, int boardNo);
 }

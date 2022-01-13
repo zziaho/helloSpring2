@@ -6,4 +6,11 @@
 		SELECT * FROM BOARD
 	</select>
 
+	<select id="countBoardList" resultType="_int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
+	
+	<select id="selectBoard" parameterType="_int" resultType="board">
+		SELECT * FROM BOARD WHERE BOARDNO=#{boardNo}
+	</select>
 </mapper>

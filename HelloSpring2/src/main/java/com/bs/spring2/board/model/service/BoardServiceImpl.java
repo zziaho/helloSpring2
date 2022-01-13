@@ -23,4 +23,14 @@ public class BoardServiceImpl implements BoardService {
 		return dao.selectBoardList(session);
 	}
 	
+	@Override
+	public int countBoardList() {
+		return dao.countBoardList(session);
+	}
+	
+	@Override
+	public Board selectBoard(int boardNo) {
+		return dao.selectBoard(session, boardNo);
+	}
+	
 }

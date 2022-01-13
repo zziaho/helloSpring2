@@ -15,4 +15,13 @@ public class BoardDaoImpl implements BoardDao {
 		return session.selectList("board.selectBoardList");
 	}
 	
+	@Override
+	public int countBoardList(SqlSessionTemplate session) {
+		return session.selectOne("board.countBoardList");
+	}
+	
+	@Override
+	public Board selectBoard(SqlSessionTemplate session, int boardNo) {
+		return session.selectOne("board.selectBoard", boardNo);
+	}
 }

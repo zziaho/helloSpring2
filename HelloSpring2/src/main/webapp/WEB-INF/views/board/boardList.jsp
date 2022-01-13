@@ -22,7 +22,7 @@
             <c:forEach var="b" items="${list }">
             	<tr>
             		<td><c:out value="${b.boardNo }"/></td>
-            		<td><c:out value="${b.boardTitle }"/></td>
+            		<td><a href="${path }/board/boardView.do?boardNo=${b.boardNo }"><c:out value="${b.boardTitle }"/></a></td>
             		<td><c:out value="${b.boardWriter }"/></td>
             		<td><c:out value="${b.boardDate }"/></td>
             		<td>첨부파일</td>
