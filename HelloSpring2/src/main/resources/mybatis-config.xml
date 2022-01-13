@@ -7,5 +7,7 @@
 		<typeAlias type="com.bs.spring2.common.StringArrayTypeHandler" alias="strArr"/>
 		<typeAlias type="com.bs.spring2.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.bs.spring2.memo.model.vo.Memo" alias="memo"/>
+		<typeAlias type="com.bs.spring2.board.model.vo.Board" alias="board"/>
 	</typeAliases>
+	
 </configuration>
