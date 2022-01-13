@@ -33,4 +33,10 @@ public class BoardServiceImpl implements BoardService {
 		return dao.selectBoard(session, boardNo);
 	}
 	
+	// 게시글 등록
+	@Override
+	public int insertBoard(Board b) {
+		return dao.insertBoard(session, b);
+	}
+	
 }

@@ -13,4 +13,8 @@
 	<select id="selectBoard" parameterType="_int" resultType="board">
 		SELECT * FROM BOARD WHERE BOARDNO=#{boardNo}
 	</select>
+	
+	<insert id="insertBoard" parameterType="board">
+		INSERT INTO BOARD VALUES(SEQ_BOARDNO.NEXTVAL, #{boardTitle}, #{boardWriter}, #{boardContent}, SYSDATE, default)
+	</insert>
 </mapper>

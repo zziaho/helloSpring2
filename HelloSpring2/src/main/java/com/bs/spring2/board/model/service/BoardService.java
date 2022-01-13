@@ -14,4 +14,7 @@ public interface BoardService {
 	
 	// 게시글 번호에 맞는 게시글 가져오기
 	Board selectBoard(int boardNo);
+	
+	// 게시글 등록
+	int insertBoard(Board b);
 }

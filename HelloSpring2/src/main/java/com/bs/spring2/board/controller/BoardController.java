@@ -39,6 +39,24 @@ public class BoardController {
 		return "board/boardView";
 	}
 	
+	// 게시글 쓰기 화면으로 전환만 시켜준다
+	@RequestMapping("/boardInsert.do")
+	public String insertBoardView() {
+		return "board/boardInsert";
+	}
+	
+	// 게시글 쓰기 등록
+	@RequestMapping("/boardInsertEnd.do")
+	public String insertBoard(Board b, Model model) {
+		int result = service.insertBoard(b);
+		if(result > 0) {
+			
+		}else {
+			
+		}
+		return "board/boardList";
+	}
+	
 }
 
 

@@ -29,7 +29,10 @@
             		<td><c:out value="${b.boardReadCount }"/></td>
             	</tr>
             </c:forEach>
-        </table> 
+        </table>
+        
+<button type="button" class="btn btn-outline-success btn-block" onclick="location.assign('${path}/board/boardInsert.do')">글쓰기</button>
+
 </section>   
    
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />   
