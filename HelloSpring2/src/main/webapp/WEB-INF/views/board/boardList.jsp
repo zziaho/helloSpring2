@@ -23,13 +23,20 @@
             	<tr>
             		<td><c:out value="${b.boardNo }"/></td>
             		<td><a href="${path }/board/boardView.do?boardNo=${b.boardNo }"><c:out value="${b.boardTitle }"/></a></td>
-            		<td><c:out value="${b.boardWriter }"/></td>
+            		<td><c:out value="${b.boardWriter.userId }"/></td>
             		<td><c:out value="${b.boardDate }"/></td>
-            		<td>첨부파일</td>
+            		<td>
+            			<c:if test="${b.files.size() > 0 }">
+            				<img src="${path }/resources/images/file.png" width="10px"/>
+           				</c:if>
+           			</td>
             		<td><c:out value="${b.boardReadCount }"/></td>
             	</tr>
             </c:forEach>
         </table>
+        <div id="pageBar">
+        	${pageBar }
+        </div>
         
 <button type="button" class="btn btn-outline-success btn-block" onclick="location.assign('${path}/board/boardInsert.do')">글쓰기</button>
 

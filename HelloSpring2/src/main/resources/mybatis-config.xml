@@ -8,6 +8,7 @@
 		<typeAlias type="com.bs.spring2.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.bs.spring2.memo.model.vo.Memo" alias="memo"/>
 		<typeAlias type="com.bs.spring2.board.model.vo.Board" alias="board"/>
+		<typeAlias type="com.bs.spring2.board.model.vo.Attachment" alias="attachment"/>
 	</typeAliases>
 	
 </configuration>

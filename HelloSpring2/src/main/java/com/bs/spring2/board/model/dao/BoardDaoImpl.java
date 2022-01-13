@@ -2,6 +2,7 @@ package com.bs.spring2.board.model.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +12,8 @@ import com.bs.spring2.board.model.vo.Board;
 public class BoardDaoImpl implements BoardDao {
 
 	@Override
-	public List<Board> selectBoardList(SqlSessionTemplate session) {
-		return session.selectList("board.selectBoardList");
+	public List<Board> selectBoardList(SqlSessionTemplate session, int cPage, int numPerpage) {
+		return session.selectList("board.selectBoardList", null, new RowBounds((cPage - 1) * numPerpage, numPerpage));
 	}
 	
 	@Override

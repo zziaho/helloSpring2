@@ -7,7 +7,7 @@ import com.bs.spring2.board.model.vo.Board;
 public interface BoardService {
 
 	// 전체 리스트 불러오기
-	List<Board> selectBoardList();
+	List<Board> selectBoardList(int cPage, int numPerpage);
 	
 	// 전체 게시글 개수
 	int countBoardList();

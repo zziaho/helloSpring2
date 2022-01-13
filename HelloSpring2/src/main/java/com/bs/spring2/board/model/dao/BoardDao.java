@@ -8,7 +8,8 @@ import com.bs.spring2.board.model.vo.Board;
 
 public interface BoardDao {
 
-	List<Board> selectBoardList(SqlSessionTemplate session);
+	// 전체 게시글 불러오기
+	List<Board> selectBoardList(SqlSessionTemplate session, int cPage, int numPerpage);
 	
 	int countBoardList(SqlSessionTemplate session);
 	
