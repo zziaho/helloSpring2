@@ -14,6 +14,7 @@ public interface BoardDao {
 	
 	int countBoardList(SqlSessionTemplate session);
 	
+	// 게시글 가져오기(상세보기)
 	Board selectBoard(SqlSessionTemplate session, int boardNo);
 	
 	// 게시글 등록

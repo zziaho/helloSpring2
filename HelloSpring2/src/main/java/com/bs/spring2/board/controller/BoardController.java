@@ -1,16 +1,21 @@
 package com.bs.spring2.board.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,12 +66,22 @@ public class BoardController {
 //		return "board/boardList";
 //	}
 	
+	// 게시글 상세보기
+//	@RequestMapping("/boardView.do")
+//	public String selectBoard(@RequestParam int boardNo, Model model) {
+//		Board b = service.selectBoard(boardNo);
+//		model.addAttribute("board", b);
+//		return "board/boardView";
+//	}
+	
+	// 게시글 상세보기
 	@RequestMapping("/boardView.do")
-	public String selectBoard(@RequestParam int boardNo, Model model) {
-		Board b = service.selectBoard(boardNo);
-		model.addAttribute("board", b);
-		return "board/boardView";
+	public ModelAndView selectBoard(int boardNo, ModelAndView mv) {
+		mv.addObject("board", service.selectBoard(boardNo));
+		mv.setViewName(null);
+		return mv;
 	}
+	
 	
 	// 게시글 쓰기 화면으로 전환만 시켜준다
 	@RequestMapping("/boardInsert.do")
@@ -93,10 +108,10 @@ public class BoardController {
 	      if(!f.exists()) f.mkdirs();
 	      b.setFiles(new ArrayList<Attachment>());
 	      for(MultipartFile mf : upFile) {
-	    	  if(!upFile[0].isEmpty()) {
+	    	  if(!mf.isEmpty()) {
 	    		  //파일 리네임처리를 직접처리
 	    		  String originalFileName = mf.getOriginalFilename();
-	    		  String ext=originalFileName.substring(originalFileName.lastIndexOf("."));
+	    		  String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
 	    		  
 	    		  //리네임규칙설정
 	    		  SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd_HHmmsssss");
@@ -118,23 +133,76 @@ public class BoardController {
 	     	}
 	      
 	      }
-	      
-	      int result = service.insertBoard(b);
 	      String msg = "";
 	      String loc = "";
-	      if(result > 0) {
+	      try {
+	    	  int result = service.insertBoard(b);
 	    	  msg = "등록성공";
 	    	  loc = "/board/boardList.do";
-	      }else {
-	    	  msg = "등록실패";
+	      }catch(RuntimeException e) {
+	    	  msg = "등록실패 : " + e.getMessage();
 	    	  loc = "/board/boardInsert.do";
 	      }
+	      
+//	      if(result > 0) {
+//	    	  msg = "등록성공";
+//	    	  loc = "/board/boardList.do";
+//	      }else {
+//	    	  msg = "등록실패";
+//	    	  loc = "/board/boardInsert.do";
+//	      }
+	      
 	      mv.addObject("loc","/board/boardList.do");
 	      mv.setViewName("common/msg");
 	      return mv;
 	}
 	
+	@RequestMapping("/download.do")
+	public void fileDownload(String oriName, String reName, HttpServletRequest req, HttpServletResponse res, @RequestHeader(value="User-agent") String header) {
+		String path = req.getServletContext().getRealPath("/resources/upload/board/");
+		File saveFile = new File(path + reName);
+		BufferedInputStream bis = null;
+		ServletOutputStream sos = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(saveFile));
+			sos = res.getOutputStream();
+			boolean isMS = header.contains("Trident") || header.contains("MSIE");
+			String encodeStr = "";
+			if(isMS) {
+				encodeStr = URLEncoder.encode(oriName, "UTF-8");
+				encodeStr = encodeStr.replaceAll("\\+", "%20");
+			}else {
+				encodeStr = new String(oriName.getBytes("UTF-8"), "ISO-8859-1");
+			}
+			res.setContentType("application/octet-stream;charset=utf-8");
+			res.setHeader("Content-Disposition", "attachment;filename=\"" + encodeStr + "\"");
+			int read = -1;
+			while((read = bis.read()) != -1) {
+				sos.write(read);
+			}
+		}catch(IOException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				bis.close();
+				sos.close();
+			}catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -15,15 +15,20 @@
 
 <div id="board-container">
         <input type="text" class="form-control" name="boardTitle" id="boardTitle" value="${board.boardTitle }" readonly  required>
-        <input type="text" class="form-control" name="boardWriter" value="${board.boardWriter }"  readonly required>
-
-            <button type="button" 
+        <input type="text" class="form-control" name="boardWriter" value="${board.boardWriter.userId }"  readonly required>
+	
+		<c:if test="${not empty board.files }">
+			<c:forEach var="a" items="${board.files }">
+            	<button type="button" 
                     class="btn btn-outline-success btn-block"
-                    onclick="">
-            </button>
+                    onclick="location.assign('${path}/board/download.do?oriName=${a.originalFilename }&reName=${a.renamedFilename }')">
+                 	<c:out value="${a.originalFilename }"/>
+            	</button>
+            </c:forEach>
+         </c:if>
         
         
-        <textarea class="form-control" name="boardContent" required>${board.boardContent }</textarea>
+        <textarea class="form-control" name="boardContent" readonly required><c:out value="${board.boardContent }"/></textarea>
 </div>
 
  

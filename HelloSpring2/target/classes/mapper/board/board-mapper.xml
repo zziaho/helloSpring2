@@ -32,14 +32,18 @@
 		SELECT * FROM BOARD B 
 		JOIN MEMBER M ON B.BOARDWRITER=M.USERID 
 		LEFT JOIN ATTACHMENT A ON B.BOARDNO=A.BOARDNO
+		ORDER BY BOARDDATE DESC
 	</select>
 
 	<select id="countBoardList" resultType="_int">
 		SELECT COUNT(*) FROM BOARD
 	</select>
 	
-	<select id="selectBoard" parameterType="_int" resultType="board">
-		SELECT * FROM BOARD WHERE BOARDNO=#{boardNo}
+	<select id="selectBoard" parameterType="_int" resultMap="boardMap">
+		SELECT * 
+		FROM BOARD B JOIN MEMBER M ON B.BOARDWRITER=M.USERID
+		LEFT JOIN ATTACHMENT A ON B.BOARDNO=A.BOARDNO
+		WHERE B.BOARDNO=#{boardNo}
 	</select>
 	
 	<insert id="insertBoard" parameterType="board">
@@ -51,6 +55,8 @@
 	
 	<insert id="insertAttachment" parameterType="attachment">
 		INSERT INTO ATTACHMENT VALUES(SEQ_ATTACHMENTNO.NEXTVAL, #{boardNo}, #{originalFilename}, #{renamedFilename}, default, default, default)
+		<!-- 일부로 쿼리문 틀리게 작성 -> transaction manager 사용 -->
+		<!-- INSERT INTO ATTACHMENT VALUES(SEQ_ATTACHMENTN.NEXTVAL, #{boardNo}, #{originalFilename}, #{renamedFilename}, default, default, default) -->
 	</insert>
 	
 </mapper>
