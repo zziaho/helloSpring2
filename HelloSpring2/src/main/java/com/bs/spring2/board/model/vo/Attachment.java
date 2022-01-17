@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Attachment {
 	
 	private int attachmentNo;
-//	private int boardNo; DB의 관계때문에 있는거지 여기서는 필요없어.
+	private int boardNo;
 	private String originalFilename;
 	private String renamedFilename;
 	private Date uploadDate;

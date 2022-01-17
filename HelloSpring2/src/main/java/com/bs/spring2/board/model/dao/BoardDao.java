@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.bs.spring2.board.model.vo.Attachment;
 import com.bs.spring2.board.model.vo.Board;
 
 public interface BoardDao {
@@ -17,4 +18,6 @@ public interface BoardDao {
 	
 	// 게시글 등록
 	int insertBoard(SqlSessionTemplate session, Board b);
+	
+	int insertAttachment(SqlSessionTemplate session, Attachment file);
 }

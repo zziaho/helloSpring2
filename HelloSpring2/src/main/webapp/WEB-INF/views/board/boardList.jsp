@@ -38,7 +38,8 @@
         	${pageBar }
         </div>
         
-<button type="button" class="btn btn-outline-success btn-block" onclick="location.assign('${path}/board/boardInsert.do')">글쓰기</button>
+        <!-- 글쓰기 버튼 -->
+		<button type="button" class="btn btn-outline-success" onclick="location.assign('${path}/board/boardInsert.do')">글쓰기</button>
 
 </section>   
    
