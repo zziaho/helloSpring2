@@ -10,7 +10,7 @@
 		<result column="boardReadCount" property="boardReadCount"/>
 		<association property="boardWriter" resultMap="memberMap"/>
 		<collection property="files" ofType="attachment">
-			<id column="attachmentNo" property="attachmenttNo"/>
+			<id column="attachmentNo" property="attachmentNo"/>
 			<result column="originalfilename" property="originalFilename"/>
 			<result column="renamedfilename" property="renamedFilename"/>
 			<result column="uploaddate" property="uploadDate"/>

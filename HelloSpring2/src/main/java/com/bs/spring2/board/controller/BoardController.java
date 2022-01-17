@@ -76,10 +76,12 @@ public class BoardController {
 	
 	// 게시글 쓰기 등록
 	@RequestMapping(value="/boardInsertEnd.do", method=RequestMethod.POST)
-	public ModelAndView insertBoard(Board b, String writer,ModelAndView mv, MultipartFile upFile, HttpServletRequest req) {
+	public ModelAndView insertBoard(Board b, String writer,ModelAndView mv, @RequestParam(value="upFile", required=false) MultipartFile[] upFile, HttpServletRequest req) {
 		
-	      log.debug(upFile.getOriginalFilename());
-	      log.debug("{}",upFile.getSize());
+	      log.debug(upFile[0].getOriginalFilename());
+	      log.debug("{}",upFile[0].getSize());
+	      log.debug(upFile[1].getOriginalFilename());
+	      log.debug("{}",upFile[1].getSize());
 	      
 	      b.setBoardWriter(new Member());
 	      b.getBoardWriter().setUserId(writer);
@@ -89,29 +91,32 @@ public class BoardController {
 	      String path=req.getServletContext().getRealPath("/resources/upload/board/");
 	      File f=new File(path);
 	      if(!f.exists()) f.mkdirs();
+	      b.setFiles(new ArrayList<Attachment>());
+	      for(MultipartFile mf : upFile) {
+	    	  if(!upFile[0].isEmpty()) {
+	    		  //파일 리네임처리를 직접처리
+	    		  String originalFileName = mf.getOriginalFilename();
+	    		  String ext=originalFileName.substring(originalFileName.lastIndexOf("."));
+	    		  
+	    		  //리네임규칙설정
+	    		  SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd_HHmmsssss");
+	    		  int rndNum=(int)(Math.random()*1000);
+	    		  String renameFile=sdf.format(System.currentTimeMillis()) + "_" + rndNum + ext;
+	    		  
+	    		  //리네임명으로 파일저장하기
+	    		  //multipartFile클래스에서 파일을 저장하는 메소드를 제공함. -> transferTo(파일객체);
+	    		  try {
+	    			  mf.transferTo(new File(path+renameFile));
+//	    			  b.setFiles(new ArrayList<Attachment>());
+	    			  Attachment file=new Attachment();
+	    			  file.setOriginalFilename(originalFileName);
+	    			  file.setRenamedFilename(renameFile);
+	    			  b.getFiles().add(file);
+	    		  }catch(IOException e) {
+	    			  e.printStackTrace();
+	    		  }
+	     	}
 	      
-	      if(!upFile.isEmpty()) {
-	         //파일 리네임처리를 직접처리
-	         String originalFileName=upFile.getOriginalFilename();
-	         String ext=originalFileName.substring(originalFileName.lastIndexOf("."));
-	         
-	         //리네임규칙설정
-	         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd_HHmmsssss");
-	         int rndNum=(int)(Math.random()*1000);
-	         String renameFile=sdf.format(System.currentTimeMillis())+"_"+rndNum+ext;
-	         
-	         //리네임명으로 파일저장하기
-	         //multipartFile클래스에서 파일을 저장하는 메소드를 제공함. -> transferTo(파일객체);
-	         try {
-	            upFile.transferTo(new File(path+renameFile));
-	            b.setFiles(new ArrayList<Attachment>());
-	            Attachment file=new Attachment();
-	            file.setOriginalFilename(originalFileName);
-	            file.setRenamedFilename(renameFile);
-	            b.getFiles().add(file);
-	         }catch(IOException e) {
-	            e.printStackTrace();
-	         }
 	      }
 	      
 	      int result = service.insertBoard(b);

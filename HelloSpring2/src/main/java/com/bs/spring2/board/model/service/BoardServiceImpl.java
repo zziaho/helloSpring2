@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bs.spring2.board.model.dao.BoardDao;
+import com.bs.spring2.board.model.vo.Attachment;
 import com.bs.spring2.board.model.vo.Board;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,12 +43,15 @@ public class BoardServiceImpl implements BoardService {
 		log.debug("전 boardNo : {}", b.getBoardNo());
 		int result = dao.insertBoard(session, b);
 		log.debug("후 boardNo : {}", b.getBoardNo());
-		if(result > 0) {
-			b.getFiles().get(0).setBoardNo(b.getBoardNo());
-			result = dao.insertAttachment(session, b.getFiles().get(0));
+		if(result > 0 && !b.getFiles().isEmpty()) { // b.getFiles().size() > 0) {
+			for(Attachment a : b.getFiles()) {
+				a.setBoardNo(b.getBoardNo());
+				result = dao.insertAttachment(session, a);
+			}
+//			b.getFiles().get(0).setBoardNo(b.getBoardNo());
+//			result = dao.insertAttachment(session, b.getFiles().get(0));
 //			if -> spring 트렌젝션 매니저가 담당한다.
 		}
-		
 		return result;
 	}
 	
