@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<!-- 얘가 제일 먼저 올라감 (부모) -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -18,6 +19,7 @@
 	</listener>
 
 	<!-- Processes application requests -->
+	<!-- Dispatcher가 실행될때 올라간다 (자식) -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

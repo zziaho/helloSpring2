@@ -45,7 +45,7 @@
 							<a class="nav-link" href="${path }">HOME</a>
 						</li>
 						<li class="nav-item active">
-							<a class="nav-link" href="">게시판</a>
+							<a class="nav-link" href="${path }/board/boardList.do">게시판</a>
 						</li>
 						<li class="nav-item active">
 							<a class="nav-link" href="${path }/memo/memoList.do">Memo</a>

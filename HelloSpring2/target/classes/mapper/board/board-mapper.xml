@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="board">
+
+	<resultMap type="board" id="boardMap">
+		<id column="boardNo" property="boardNo"/>
+		<result column="boardTitle" property="boardTitle"/>
+		<result column="boardContent" property="boardContent"/>
+		<result column="boardDate" property="boardDate"/>
+		<result column="boardReadCount" property="boardReadCount"/>
+		<association property="boardWriter" resultMap="memberMap"/>
+		<collection property="files" ofType="attachment">
+			<id column="attachmentNo" property="attachmentNo"/>
+			<result column="originalfilename" property="originalFilename"/>
+			<result column="renamedfilename" property="renamedFilename"/>
+			<result column="uploaddate" property="uploadDate"/>
+			<result column="downloadcount" property="downloadCount"/>
+		</collection>
+	</resultMap>
+	<resultMap type="member" id="memberMap">
+		<id column="userid" property="userId"/>
+		<result column="uesrname" property="userName"/>
+		<result column="email" property="email"/>
+		<result column="gender" property="gender"/>
+		<result column="age" property="age"/>
+		<result column="phone" property="phone"/>
+		<result column="address" property="address"/>
+		<result column="hobby" property="hobby" typeHandler="strArr"/>
+	</resultMap>
+
+	<select id="selectBoardList" resultMap="boardMap">
+		SELECT * FROM BOARD B 
+		JOIN MEMBER M ON B.BOARDWRITER=M.USERID 
+		LEFT JOIN ATTACHMENT A ON B.BOARDNO=A.BOARDNO
+		ORDER BY BOARDDATE DESC
+	</select>
+
+	<select id="countBoardList" resultType="_int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
+	
+	<select id="selectBoard" parameterType="_int" resultMap="boardMap">
+		SELECT * 
+		FROM BOARD B JOIN MEMBER M ON B.BOARDWRITER=M.USERID
+		LEFT JOIN ATTACHMENT A ON B.BOARDNO=A.BOARDNO
+		WHERE B.BOARDNO=#{boardNo}
+	</select>
+	
+	<insert id="insertBoard" parameterType="board">
+		INSERT INTO BOARD VALUES(SEQ_BOARDNO.NEXTVAL, #{boardTitle}, #{boardWriter.userId}, #{boardContent}, default, default)
+		<selectKey keyProperty="boardNo" resultType="_int" order="AFTER">
+			SELECT SEQ_BOARDNO.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertAttachment" parameterType="attachment">
+		INSERT INTO ATTACHMENT VALUES(SEQ_ATTACHMENTNO.NEXTVAL, #{boardNo}, #{originalFilename}, #{renamedFilename}, default, default, default)
+		<!-- 일부로 쿼리문 틀리게 작성 -> transaction manager 사용 -->
+		<!-- INSERT INTO ATTACHMENT VALUES(SEQ_ATTACHMENTN.NEXTVAL, #{boardNo}, #{originalFilename}, #{renamedFilename}, default, default, default) -->
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
